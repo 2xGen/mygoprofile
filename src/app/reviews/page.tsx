@@ -59,6 +59,7 @@ export default function ReviewsPage() {
     if ((session as any)?.accessToken && locationName) { // eslint-disable-line @typescript-eslint/no-explicit-any
       fetchReviews()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session, locationName])
 
   const formatDate = (dateString: string) => {
