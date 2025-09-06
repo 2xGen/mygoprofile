@@ -32,7 +32,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    if ((session as any)?.accessToken) {
+    if ((session as any)?.accessToken) { // eslint-disable-line @typescript-eslint/no-explicit-any
       fetchBusinessData()
     }
   }, [session])
