@@ -19,9 +19,7 @@ export class GoogleBusinessAPI {
         auth: this.oauth2Client
       })
 
-      const response = await mybusinessaccountmanagement.accounts.list({
-        readMask: 'name,displayName,type,state'
-      })
+      const response = await mybusinessaccountmanagement.accounts.list()
       console.log('Business accounts response:', response.data)
       return response.data
     } catch (error) {
@@ -60,7 +58,7 @@ export class GoogleBusinessAPI {
   }
 
   // Get reviews for a location - Note: Reviews might be in a different API
-  async getReviews(locationName: string) {
+  async getReviews(_locationName: string) {
     try {
       // For now, return empty reviews array with a note
       // The actual reviews API might be different or require additional permissions
@@ -80,7 +78,7 @@ export class GoogleBusinessAPI {
   }
 
   // Get business insights/performance data
-  async getBusinessInsights(locationName: string) {
+  async getBusinessInsights(_locationName: string) {
     try {
       // For now, return mock insights data
       // The actual insights API might require different permissions or endpoints
