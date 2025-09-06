@@ -33,9 +33,13 @@ export default function Home() {
     setLoading(true)
     try {
       // Fetch business accounts
+      console.log('Fetching business accounts...')
       const accountsResponse = await fetch('/api/business/accounts')
+      console.log('Accounts response status:', accountsResponse.status)
+      
       if (accountsResponse.ok) {
         const accountsData = await accountsResponse.json()
+        console.log('Accounts data:', accountsData)
         
         // Fetch locations for all accounts
         const allLocations: BusinessLocation[] = []

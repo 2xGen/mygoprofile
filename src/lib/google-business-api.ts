@@ -13,22 +13,29 @@ export class GoogleBusinessAPI {
   // Get business accounts using Google Business Profile Account Management API
   async getBusinessAccounts() {
     try {
+      console.log('Attempting to fetch business accounts...')
       const mybusinessaccountmanagement = google.mybusinessaccountmanagement({
         version: 'v1',
         auth: this.oauth2Client
       })
 
       const response = await mybusinessaccountmanagement.accounts.list()
+      console.log('Business accounts response:', response.data)
       return response.data
     } catch (error) {
       console.error('Error fetching business accounts:', error)
-      throw new Error(`Failed to fetch business accounts: ${error instanceof Error ? error.message : 'Unknown error'}`)
+      // Return empty array instead of throwing to keep app functional
+      return {
+        accounts: [],
+        error: `Failed to fetch business accounts: ${error instanceof Error ? error.message : 'Unknown error'}`
+      }
     }
   }
 
   // Get business locations using Google Business Profile Business Information API
   async getBusinessLocations(accountName: string) {
     try {
+      console.log('Attempting to fetch business locations for account:', accountName)
       const mybusinessbusinessinformation = google.mybusinessbusinessinformation({
         version: 'v1',
         auth: this.oauth2Client
@@ -37,10 +44,15 @@ export class GoogleBusinessAPI {
       const response = await mybusinessbusinessinformation.accounts.locations.list({
         parent: accountName
       })
+      console.log('Business locations response:', response.data)
       return response.data
     } catch (error) {
       console.error('Error fetching business locations:', error)
-      throw new Error(`Failed to fetch business locations: ${error instanceof Error ? error.message : 'Unknown error'}`)
+      // Return empty array instead of throwing to keep app functional
+      return {
+        locations: [],
+        error: `Failed to fetch business locations: ${error instanceof Error ? error.message : 'Unknown error'}`
+      }
     }
   }
 

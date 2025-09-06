@@ -12,8 +12,7 @@ export const authOptions: NextAuthOptions = {
             'openid',
             'email', 
             'profile',
-            'https://www.googleapis.com/auth/business.manage',
-            'https://www.googleapis.com/auth/plus.business.manage'
+            'https://www.googleapis.com/auth/business.manage'
           ].join(' ')
         }
       }
