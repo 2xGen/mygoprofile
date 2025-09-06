@@ -32,7 +32,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    if (session?.accessToken) {
+    if ((session as any)?.accessToken) {
       fetchBusinessData()
     }
   }, [session])
