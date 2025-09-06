@@ -4,13 +4,6 @@ import { useSession, signIn, signOut } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
-interface BusinessAccount {
-  name: string
-  accountName: string
-  type: string
-  state: string
-}
-
 interface BusinessLocation {
   name: string
   title: string

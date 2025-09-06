@@ -47,20 +47,9 @@ export class GoogleBusinessAPI {
   // Get reviews for a location - Note: Reviews might be in a different API
   async getReviews(locationName: string) {
     try {
-      // For now, we'll try the Business Information API
-      // If this doesn't work, we may need to use a different API for reviews
-      const mybusinessbusinessinformation = google.mybusinessbusinessinformation({
-        version: 'v1',
-        auth: this.oauth2Client
-      })
-
-      // Try to get location details first to see if reviews are available
-      await mybusinessbusinessinformation.accounts.locations.get({
-        name: locationName
-      })
-
       // For now, return empty reviews array with a note
       // The actual reviews API might be different or require additional permissions
+      // Google Business Profile reviews may require a different API endpoint
       return {
         reviews: [],
         note: 'Reviews API integration pending - may require additional Google Business Profile API permissions'
@@ -78,15 +67,17 @@ export class GoogleBusinessAPI {
   // Get business insights/performance data
   async getBusinessInsights(locationName: string) {
     try {
-      const mybusinessbusinessinformation = google.mybusinessbusinessinformation({
-        version: 'v1',
-        auth: this.oauth2Client
-      })
-
-      const response = await mybusinessbusinessinformation.accounts.locations.get({
-        name: locationName
-      })
-      return response.data
+      // For now, return mock insights data
+      // The actual insights API might require different permissions or endpoints
+      return {
+        insights: {
+          totalViews: 0,
+          totalClicks: 0,
+          totalCalls: 0,
+          totalDirectionRequests: 0,
+          note: 'Insights API integration pending - may require additional Google Business Profile API permissions'
+        }
+      }
     } catch (error) {
       console.error('Error fetching business insights:', error)
       throw new Error(`Failed to fetch business insights: ${error instanceof Error ? error.message : 'Unknown error'}`)
