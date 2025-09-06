@@ -1,7 +1,7 @@
 'use client'
 
 import { useSession } from 'next-auth/react'
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -32,13 +32,7 @@ export default function ReviewsPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    if ((session as any)?.accessToken && locationName) { // eslint-disable-line @typescript-eslint/no-explicit-any
-      fetchReviews()
-    }
-  }, [session, locationName, fetchReviews])
-
-  const fetchReviews = useCallback(async () => {
+  const fetchReviews = async () => {
     setLoading(true)
     setError(null)
     try {
@@ -59,7 +53,13 @@ export default function ReviewsPage() {
     } finally {
       setLoading(false)
     }
-  }, [locationName])
+  }
+
+  useEffect(() => {
+    if ((session as any)?.accessToken && locationName) { // eslint-disable-line @typescript-eslint/no-explicit-any
+      fetchReviews()
+    }
+  }, [session, locationName])
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
