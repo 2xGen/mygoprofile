@@ -1,7 +1,7 @@
 'use client'
 
 import { useSession } from 'next-auth/react'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -24,7 +24,7 @@ interface Review {
   }
 }
 
-export default function ReviewsPage() {
+function ReviewsContent() {
   const { data: session, status } = useSession()
   const searchParams = useSearchParams()
   const locationName = searchParams.get('location')
@@ -233,5 +233,13 @@ export default function ReviewsPage() {
         </div>
       </main>
     </div>
+  )
+}
+
+export default function ReviewsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <ReviewsContent />
+    </Suspense>
   )
 }
