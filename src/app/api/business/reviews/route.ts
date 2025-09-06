@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
     
-    if (!session?.accessToken) {
+    if (!(session as any)?.accessToken) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    const businessAPI = new GoogleBusinessAPI(session.accessToken as string)
+    const businessAPI = new GoogleBusinessAPI((session as any).accessToken as string)
     const reviews = await businessAPI.getReviews(locationName)
 
     return NextResponse.json(reviews)
