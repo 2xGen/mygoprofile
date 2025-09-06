@@ -33,7 +33,7 @@ export default function ReviewsPage() {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    if (session?.accessToken && locationName) {
+    if ((session as any)?.accessToken && locationName) { // eslint-disable-line @typescript-eslint/no-explicit-any
       fetchReviews()
     }
   }, [session, locationName, fetchReviews])
