@@ -21,7 +21,7 @@ export const authOptions: NextAuthOptions = {
       return token
     },
     async session({ session, token }) {
-      (session as any).accessToken = token.accessToken
+      (session as any).accessToken = token.accessToken // eslint-disable-line @typescript-eslint/no-explicit-any
       return session
     }
   },
