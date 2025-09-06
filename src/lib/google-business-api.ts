@@ -24,6 +24,16 @@ export class GoogleBusinessAPI {
       return response.data
     } catch (error) {
       console.error('Error fetching business accounts:', error)
+      
+      // Handle quota exceeded error specifically
+      if (error instanceof Error && error.message.includes('Quota exceeded')) {
+        return {
+          accounts: [],
+          error: 'API quota exceeded. Please wait a few minutes and try again.',
+          quotaExceeded: true
+        }
+      }
+      
       // Return empty array instead of throwing to keep app functional
       return {
         accounts: [],

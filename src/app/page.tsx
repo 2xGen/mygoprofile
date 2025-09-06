@@ -22,6 +22,7 @@ export default function Home() {
   const { data: session, status } = useSession()
   const [locations, setLocations] = useState<BusinessLocation[]>([])
   const [loading, setLoading] = useState(false)
+  const [accountsData, setAccountsData] = useState<any>(null)
 
   useEffect(() => {
     if ((session as any)?.accessToken) { // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -40,6 +41,7 @@ export default function Home() {
       if (accountsResponse.ok) {
         const accountsData = await accountsResponse.json()
         console.log('Accounts data:', accountsData)
+        setAccountsData(accountsData)
         
         // Fetch locations for all accounts
         const allLocations: BusinessLocation[] = []
@@ -223,6 +225,13 @@ export default function Home() {
                     <p className="mt-2 text-xs text-gray-400">
                       If you have Google Business Profiles, try signing out and signing back in to refresh permissions.
                     </p>
+                    {locations.length === 0 && (accountsData as any)?.quotaExceeded && (
+                      <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
+                        <p className="text-sm text-yellow-800">
+                          ⚠️ API quota exceeded. Please wait a few minutes and refresh the page.
+                        </p>
+                      </div>
+                    )}
                     <div className="mt-6">
                       <a
                         href="https://business.google.com/"
