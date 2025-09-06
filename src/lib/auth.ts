@@ -8,7 +8,13 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       authorization: {
         params: {
-          scope: 'openid email profile https://www.googleapis.com/auth/business.manage'
+          scope: [
+            'openid',
+            'email', 
+            'profile',
+            'https://www.googleapis.com/auth/business.manage',
+            'https://www.googleapis.com/auth/plus.business.manage'
+          ].join(' ')
         }
       }
     })

@@ -1,81 +1,95 @@
-// Simple mock API for now - focus on getting OAuth working first
+import { google } from 'googleapis'
+
 export class GoogleBusinessAPI {
+  private oauth2Client: any // eslint-disable-line @typescript-eslint/no-explicit-any
+
   constructor(accessToken: string) {
-    console.log('Google Business API initialized with access token:', accessToken ? 'Present' : 'Missing')
+    this.oauth2Client = new google.auth.OAuth2()
+    this.oauth2Client.setCredentials({
+      access_token: accessToken
+    })
   }
 
-  // Mock business accounts
+  // Get business accounts using Google Business Profile Account Management API
   async getBusinessAccounts() {
-    console.log('Fetching mock business accounts...')
-    return {
-      accounts: [
-        {
-          name: 'accounts/123456789',
-          accountName: 'My Business Account',
-          type: 'PERSONAL',
-          state: 'VERIFIED'
-        }
-      ]
+    try {
+      const mybusinessaccountmanagement = google.mybusinessaccountmanagement({
+        version: 'v1',
+        auth: this.oauth2Client
+      })
+
+      const response = await mybusinessaccountmanagement.accounts.list()
+      return response.data
+    } catch (error) {
+      console.error('Error fetching business accounts:', error)
+      throw new Error(`Failed to fetch business accounts: ${error instanceof Error ? error.message : 'Unknown error'}`)
     }
   }
 
-  // Mock business locations
+  // Get business locations using Google Business Profile Business Information API
   async getBusinessLocations(accountName: string) {
-    console.log('Fetching mock locations for account:', accountName)
-    return {
-      locations: [
-        {
-          name: 'accounts/123456789/locations/987654321',
-          title: 'My Business Location',
-          address: '123 Main St, City, State 12345',
-          phoneNumber: '+1-555-123-4567',
-          websiteUri: 'https://mybusiness.com'
-        }
-      ]
+    try {
+      const mybusinessbusinessinformation = google.mybusinessbusinessinformation({
+        version: 'v1',
+        auth: this.oauth2Client
+      })
+
+      const response = await mybusinessbusinessinformation.accounts.locations.list({
+        parent: accountName
+      })
+      return response.data
+    } catch (error) {
+      console.error('Error fetching business locations:', error)
+      throw new Error(`Failed to fetch business locations: ${error instanceof Error ? error.message : 'Unknown error'}`)
     }
   }
 
-  // Mock reviews
+  // Get reviews for a location - Note: Reviews might be in a different API
   async getReviews(locationName: string) {
-    console.log('Fetching mock reviews for location:', locationName)
-    return {
-      reviews: [
-        {
-          reviewId: '1',
-          reviewer: {
-            displayName: 'John Doe',
-            profilePhotoUrl: 'https://via.placeholder.com/40'
-          },
-          starRating: 'FIVE',
-          comment: 'Great service! Highly recommend.',
-          createTime: '2024-01-15T10:30:00Z',
-          updateTime: '2024-01-15T10:30:00Z'
-        },
-        {
-          reviewId: '2',
-          reviewer: {
-            displayName: 'Jane Smith',
-            profilePhotoUrl: 'https://via.placeholder.com/40'
-          },
-          starRating: 'FOUR',
-          comment: 'Good experience overall.',
-          createTime: '2024-01-10T14:20:00Z',
-          updateTime: '2024-01-10T14:20:00Z'
-        }
-      ]
+    try {
+      // For now, we'll try the Business Information API
+      // If this doesn't work, we may need to use a different API for reviews
+      const mybusinessbusinessinformation = google.mybusinessbusinessinformation({
+        version: 'v1',
+        auth: this.oauth2Client
+      })
+
+      // Try to get location details first to see if reviews are available
+      const locationResponse = await mybusinessbusinessinformation.accounts.locations.get({
+        name: locationName
+      })
+
+      // For now, return empty reviews array with a note
+      // The actual reviews API might be different or require additional permissions
+      return {
+        reviews: [],
+        note: 'Reviews API integration pending - may require additional Google Business Profile API permissions'
+      }
+    } catch (error) {
+      console.error('Error fetching reviews:', error)
+      // Return empty reviews instead of throwing error to keep the app functional
+      return {
+        reviews: [],
+        error: `Reviews temporarily unavailable: ${error instanceof Error ? error.message : 'Unknown error'}`
+      }
     }
   }
 
-  // Mock business insights
+  // Get business insights/performance data
   async getBusinessInsights(locationName: string) {
-    console.log('Fetching mock insights for location:', locationName)
-    return {
-      insights: {
-        totalViews: 1250,
-        totalClicks: 89,
-        totalCalls: 23,
-        totalDirectionRequests: 45
-      }
+    try {
+      const mybusinessbusinessinformation = google.mybusinessbusinessinformation({
+        version: 'v1',
+        auth: this.oauth2Client
+      })
+
+      const response = await mybusinessbusinessinformation.accounts.locations.get({
+        name: locationName
+      })
+      return response.data
+    } catch (error) {
+      console.error('Error fetching business insights:', error)
+      throw new Error(`Failed to fetch business insights: ${error instanceof Error ? error.message : 'Unknown error'}`)
     }
   }
 }

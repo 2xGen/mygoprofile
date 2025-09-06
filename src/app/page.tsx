@@ -49,15 +49,29 @@ export default function Home() {
         // Fetch locations for all accounts
         const allLocations: BusinessLocation[] = []
         for (const account of accountsData.accounts || []) {
-          const locationsResponse = await fetch(
-            `/api/business/locations?accountName=${encodeURIComponent(account.name)}`
-          )
-          if (locationsResponse.ok) {
-            const locationsData = await locationsResponse.json()
-            allLocations.push(...(locationsData.locations || []))
+          try {
+            const locationsResponse = await fetch(
+              `/api/business/locations?accountName=${encodeURIComponent(account.name)}`
+            )
+            if (locationsResponse.ok) {
+              const locationsData = await locationsResponse.json()
+              allLocations.push(...(locationsData.locations || []))
+            } else {
+              const errorData = await locationsResponse.json()
+              console.error(`Error fetching locations for ${account.name}:`, errorData.error)
+            }
+          } catch (locationError) {
+            console.error(`Error fetching locations for ${account.name}:`, locationError)
           }
         }
         setLocations(allLocations)
+      } else {
+        const errorData = await accountsResponse.json()
+        console.error('Error fetching accounts:', errorData.error)
+        // Show user-friendly error message
+        if (errorData.error.includes('Insufficient permissions')) {
+          alert('Please re-authenticate with Google to access your Business Profile data.')
+        }
       }
     } catch (error) {
       console.error('Error fetching business data:', error)
