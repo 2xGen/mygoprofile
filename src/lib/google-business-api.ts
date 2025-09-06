@@ -1,104 +1,81 @@
-import { google } from 'googleapis'
-
+// Simple mock API for now - focus on getting OAuth working first
 export class GoogleBusinessAPI {
-  private oauth2Client: any // eslint-disable-line @typescript-eslint/no-explicit-any
-
   constructor(accessToken: string) {
-    this.oauth2Client = new google.auth.OAuth2()
-    this.oauth2Client.setCredentials({
-      access_token: accessToken
-    })
+    console.log('Google Business API initialized with access token:', accessToken ? 'Present' : 'Missing')
   }
 
-  // Get business accounts
+  // Mock business accounts
   async getBusinessAccounts() {
-    try {
-      const mybusinessaccountmanagement = google.mybusinessaccountmanagement({
-        version: 'v1',
-        auth: this.oauth2Client
-      })
-
-      const response = await mybusinessaccountmanagement.accounts.list()
-      return response.data
-    } catch (error) {
-      console.error('Error fetching business accounts:', error)
-      throw error
+    console.log('Fetching mock business accounts...')
+    return {
+      accounts: [
+        {
+          name: 'accounts/123456789',
+          accountName: 'My Business Account',
+          type: 'PERSONAL',
+          state: 'VERIFIED'
+        }
+      ]
     }
   }
 
-  // Get business locations
+  // Mock business locations
   async getBusinessLocations(accountName: string) {
-    try {
-      const mybusinessbusinessinformation = google.mybusinessbusinessinformation({
-        version: 'v1',
-        auth: this.oauth2Client
-      })
-
-      const response = await mybusinessbusinessinformation.accounts.locations.list({
-        parent: accountName
-      })
-      return response.data
-    } catch (error) {
-      console.error('Error fetching business locations:', error)
-      throw error
+    console.log('Fetching mock locations for account:', accountName)
+    return {
+      locations: [
+        {
+          name: 'accounts/123456789/locations/987654321',
+          title: 'My Business Location',
+          address: '123 Main St, City, State 12345',
+          phoneNumber: '+1-555-123-4567',
+          websiteUri: 'https://mybusiness.com'
+        }
+      ]
     }
   }
 
-  // Get reviews for a location
+  // Mock reviews
   async getReviews(locationName: string) {
-    try {
-      // For now, return mock data since the exact API structure needs to be verified
-      // TODO: Implement proper Google Business Profile reviews API call
-      console.log('Fetching reviews for location:', locationName)
-      
-      // Mock reviews data for testing
-      return {
-        reviews: [
-          {
-            reviewId: '1',
-            reviewer: {
-              displayName: 'John Doe',
-              profilePhotoUrl: 'https://via.placeholder.com/40'
-            },
-            starRating: 'FIVE',
-            comment: 'Great service! Highly recommend.',
-            createTime: '2024-01-15T10:30:00Z',
-            updateTime: '2024-01-15T10:30:00Z'
+    console.log('Fetching mock reviews for location:', locationName)
+    return {
+      reviews: [
+        {
+          reviewId: '1',
+          reviewer: {
+            displayName: 'John Doe',
+            profilePhotoUrl: 'https://via.placeholder.com/40'
           },
-          {
-            reviewId: '2',
-            reviewer: {
-              displayName: 'Jane Smith',
-              profilePhotoUrl: 'https://via.placeholder.com/40'
-            },
-            starRating: 'FOUR',
-            comment: 'Good experience overall.',
-            createTime: '2024-01-10T14:20:00Z',
-            updateTime: '2024-01-10T14:20:00Z'
-          }
-        ]
-      }
-    } catch (error) {
-      console.error('Error fetching reviews:', error)
-      throw error
+          starRating: 'FIVE',
+          comment: 'Great service! Highly recommend.',
+          createTime: '2024-01-15T10:30:00Z',
+          updateTime: '2024-01-15T10:30:00Z'
+        },
+        {
+          reviewId: '2',
+          reviewer: {
+            displayName: 'Jane Smith',
+            profilePhotoUrl: 'https://via.placeholder.com/40'
+          },
+          starRating: 'FOUR',
+          comment: 'Good experience overall.',
+          createTime: '2024-01-10T14:20:00Z',
+          updateTime: '2024-01-10T14:20:00Z'
+        }
+      ]
     }
   }
 
-  // Get business insights/performance data
+  // Mock business insights
   async getBusinessInsights(locationName: string) {
-    try {
-      const mybusinessbusinessinformation = google.mybusinessbusinessinformation({
-        version: 'v1',
-        auth: this.oauth2Client
-      })
-
-      const response = await mybusinessbusinessinformation.accounts.locations.get({
-        name: locationName
-      })
-      return response.data
-    } catch (error) {
-      console.error('Error fetching business insights:', error)
-      throw error
+    console.log('Fetching mock insights for location:', locationName)
+    return {
+      insights: {
+        totalViews: 1250,
+        totalClicks: 89,
+        totalCalls: 23,
+        totalDirectionRequests: 45
+      }
     }
   }
 }
