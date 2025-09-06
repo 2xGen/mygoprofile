@@ -4,15 +4,22 @@ import { authOptions } from '@/lib/auth'
 import { GoogleBusinessAPI } from '@/lib/google-business-api'
 
 export async function GET() {
+  console.log('=== ACCOUNTS API ROUTE CALLED ===')
   try {
     const session = await getServerSession(authOptions)
+    console.log('Session exists:', !!session)
+    console.log('Access token exists:', !!(session as any)?.accessToken) // eslint-disable-line @typescript-eslint/no-explicit-any
     
     if (!(session as any)?.accessToken) { // eslint-disable-line @typescript-eslint/no-explicit-any
+      console.log('No access token, returning 401')
       return NextResponse.json({ error: 'Unauthorized - No access token' }, { status: 401 })
     }
 
+    console.log('Creating GoogleBusinessAPI instance...')
     const businessAPI = new GoogleBusinessAPI((session as any).accessToken as string) // eslint-disable-line @typescript-eslint/no-explicit-any
+    console.log('Calling getBusinessAccounts...')
     const accounts = await businessAPI.getBusinessAccounts()
+    console.log('Accounts result:', accounts)
 
     return NextResponse.json(accounts)
   } catch (error) {
