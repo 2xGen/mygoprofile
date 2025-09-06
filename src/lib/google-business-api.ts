@@ -19,7 +19,9 @@ export class GoogleBusinessAPI {
         auth: this.oauth2Client
       })
 
-      const response = await mybusinessaccountmanagement.accounts.list()
+      const response = await mybusinessaccountmanagement.accounts.list({
+        readMask: 'name,displayName,type,state'
+      })
       console.log('Business accounts response:', response.data)
       return response.data
     } catch (error) {
@@ -42,7 +44,8 @@ export class GoogleBusinessAPI {
       })
 
       const response = await mybusinessbusinessinformation.accounts.locations.list({
-        parent: accountName
+        parent: accountName,
+        readMask: 'name,displayName,websiteUri,primaryPhone,address'
       })
       console.log('Business locations response:', response.data)
       return response.data

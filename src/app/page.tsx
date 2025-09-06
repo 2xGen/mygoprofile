@@ -218,7 +218,10 @@ export default function Home() {
                     </svg>
                     <h3 className="mt-2 text-sm font-medium text-gray-900">No businesses found</h3>
                     <p className="mt-1 text-sm text-gray-500">
-                      You don&apos;t have any Google Business Profiles associated with this account.
+                      You don&apos;t have any Google Business Profiles associated with this account, or the app needs to be re-authorized.
+                    </p>
+                    <p className="mt-2 text-xs text-gray-400">
+                      If you have Google Business Profiles, try signing out and signing back in to refresh permissions.
                     </p>
                     <div className="mt-6">
                       <a
