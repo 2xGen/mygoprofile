@@ -55,7 +55,7 @@ export class GoogleBusinessAPI {
       })
 
       // Try to get location details first to see if reviews are available
-      const locationResponse = await mybusinessbusinessinformation.accounts.locations.get({
+      await mybusinessbusinessinformation.accounts.locations.get({
         name: locationName
       })
 
