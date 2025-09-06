@@ -1,9 +1,10 @@
 'use client'
 
 import { useSession } from 'next-auth/react'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 
 interface Review {
   name: string
@@ -35,9 +36,9 @@ export default function ReviewsPage() {
     if (session?.accessToken && locationName) {
       fetchReviews()
     }
-  }, [session, locationName])
+  }, [session, locationName, fetchReviews])
 
-  const fetchReviews = async () => {
+  const fetchReviews = useCallback(async () => {
     setLoading(true)
     setError(null)
     try {
@@ -58,7 +59,7 @@ export default function ReviewsPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [locationName])
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -173,9 +174,11 @@ export default function ReviewsPage() {
                       <div className="flex items-start space-x-4">
                         <div className="flex-shrink-0">
                           {review.reviewer.profilePhotoUrl ? (
-                            <img
+                            <Image
                               src={review.reviewer.profilePhotoUrl}
                               alt={review.reviewer.displayName}
+                              width={40}
+                              height={40}
                               className="h-10 w-10 rounded-full"
                             />
                           ) : (

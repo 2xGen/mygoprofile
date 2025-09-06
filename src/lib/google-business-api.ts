@@ -1,7 +1,7 @@
 import { google } from 'googleapis'
 
 export class GoogleBusinessAPI {
-  private oauth2Client: any
+  private oauth2Client: any // eslint-disable-line @typescript-eslint/no-explicit-any
 
   constructor(accessToken: string) {
     this.oauth2Client = new google.auth.OAuth2()
