@@ -28,6 +28,7 @@ function ReviewsContent() {
   const { data: session, status } = useSession()
   const searchParams = useSearchParams()
   const locationName = searchParams.get('location')
+  const businessTitle = searchParams.get('title') || 'Business'
   const [reviews, setReviews] = useState<Review[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -144,7 +145,7 @@ function ReviewsContent() {
 
           <div className="bg-white shadow rounded-lg">
             <div className="px-6 py-4 border-b border-gray-200">
-              <h1 className="text-2xl font-bold text-gray-900">Reviews</h1>
+              <h1 className="text-2xl font-bold text-gray-900">Reviews for {businessTitle}</h1>
               <p className="text-gray-600">Manage your Google Business Profile reviews</p>
             </div>
 
