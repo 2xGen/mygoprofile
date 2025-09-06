@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
     
-    if (!(session as any)?.accessToken) {
+    if (!(session as any)?.accessToken) { // eslint-disable-line @typescript-eslint/no-explicit-any
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    const businessAPI = new GoogleBusinessAPI((session as any).accessToken as string)
+    const businessAPI = new GoogleBusinessAPI((session as any).accessToken as string) // eslint-disable-line @typescript-eslint/no-explicit-any
     const locations = await businessAPI.getBusinessLocations(accountName)
 
     return NextResponse.json(locations)
